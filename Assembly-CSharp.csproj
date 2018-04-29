@@ -61,6 +61,14 @@
   <ItemGroup>
     <Compile Include="Assets\HelpScripts\AStarTester.cs" />
     <Compile Include="Assets\HelpScripts\HelpLib.cs" />
+    <Compile Include="Assets\MainScripts\AbstractMap\BaseCluster.cs" />
+    <Compile Include="Assets\MainScripts\AbstractMap\Cell.cs" />
+    <Compile Include="Assets\MainScripts\AbstractMap\Cluster.cs" />
+    <Compile Include="Assets\MainScripts\AbstractMap\GeneralGrid.cs" />
+    <Compile Include="Assets\MainScripts\AbstractMap\Grid.cs" />
+    <Compile Include="Assets\MainScripts\AbstractMap\ICluster.cs" />
+    <Compile Include="Assets\MainScripts\AbstractMap\IMapUnit.cs" />
+    <Compile Include="Assets\MainScripts\AbstractMap\RunModel.cs" />
     <Compile Include="Assets\MainScripts\Barriers\Barrier.cs" />
     <Compile Include="Assets\MainScripts\Barriers\Bridge.cs" />
     <Compile Include="Assets\MainScripts\Barriers\Jungle.cs" />
@@ -72,24 +80,16 @@
     <Compile Include="Assets\MainScripts\GameLogic\PathTable.cs" />
     <Compile Include="Assets\MainScripts\GameMap\MapBuilder.cs" />
     <Compile Include="Assets\MainScripts\GameMap\RawMap.cs" />
-    <Compile Include="Assets\MainScripts\LogicMap\BaseCluster.cs" />
-    <Compile Include="Assets\MainScripts\LogicMap\Cell.cs" />
-    <Compile Include="Assets\MainScripts\LogicMap\Cluster.cs" />
-    <Compile Include="Assets\MainScripts\LogicMap\GeneralGrid.cs" />
-    <Compile Include="Assets\MainScripts\LogicMap\Grid.cs" />
-    <Compile Include="Assets\MainScripts\LogicMap\ICluster.cs" />
-    <Compile Include="Assets\MainScripts\LogicMap\IMapUnit.cs" />
-    <Compile Include="Assets\MainScripts\LogicMap\RunModel.cs" />
     <Compile Include="Assets\MainScripts\Units\Bridger.cs" />
     <Compile Include="Assets\MainScripts\Units\Jungler.cs" />
     <Compile Include="Assets\MainScripts\Units\Magician.cs" />
     <Compile Include="Assets\MainScripts\Units\Pitter.cs" />
     <Compile Include="Assets\MainScripts\Units\Unit.cs" />
-    <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>E:/Unity/Diplom/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
       <HintPath>E:/Unity/Diplom/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.StandardEvents">
+      <HintPath>E:/Unity/Diplom/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity 2018.1.0b12/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

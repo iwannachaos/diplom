@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 public class Path 
 {
@@ -33,6 +34,27 @@ public class Path
         return Points.Count;
     }
 
+    public void Write(BinaryWriter bw)
+    {
+        bw.Write(Points.Count);
+        for (int c = 0; c < Points.Count; c++)
+        {
+            bw.Write(Points[c].Line);
+            bw.Write(Points[c].Column);
+        }
+    }
+
+    public void Read(BinaryReader br)
+    {
+        int length = br.ReadInt32();
+        for (int c = 0; c < length;  c++)
+        {
+           int line = br.ReadInt32();
+           int col = br.ReadInt32();
+           Points[c] = new Point(line, col);
+        }
+    }
+
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder();
@@ -49,5 +71,7 @@ public class Path
 
         return sb.ToString();
     }
+
+
 
 }

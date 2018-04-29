@@ -45,3 +45,15 @@ public enum Direction
     Left,
     Right
 }
+
+public class CellPair
+{
+    public IMapUnit FirstCell { get; private set; }
+    public IMapUnit SecondCell { get; private set; }
+
+    public CellPair(IMapUnit first, IMapUnit sec)
+    {
+        FirstCell = first;
+        SecondCell = sec;
+    }
+}

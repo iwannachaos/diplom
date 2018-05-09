@@ -8,6 +8,7 @@ public class GeneralGrid
     public Cell[,] Cells {get ;private set;}
     public int Width { get; private set; }
     public int Height { get; private set; }
+    public int DeepLevel { get;  set; }
    
 
     public GeneralGrid(int width, int height)
@@ -16,6 +17,7 @@ public class GeneralGrid
         Width = width;
         Height = height;
         Cells = new Cell[Height, Width];
+        DeepLevel = 0;
     }
 
     public void ToGrid(CellType[,] cells)

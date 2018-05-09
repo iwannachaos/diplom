@@ -3,7 +3,23 @@ using System.Collections;
 
 public class HelpLib 
 {
+    public static  Point GetGlobalClusterPostionByPoint(Point point, ICluster clusterLevel)
+    {
+        int h = clusterLevel.Height / clusterLevel.ChildrenHeigth;
+        int w = clusterLevel.Width / clusterLevel.ChildrenWidth;
+        int line = point.Line / h;
+        int col = point.Column / w;
+        return new Point(line, col);
+    }
 
+    public static Point GetLocalPointPostionInCluster(Point point, ICluster cluster)
+    {
+        //int h = clusterLevel.Height / clusterLevel.ChildrenHeigth;
+        //int w = clusterLevel.Width / clusterLevel.ChildrenWidth;
+        int line = point.Line % clusterLevel.Height;
+        int col = point.Column % clusterLevel.Width;
+        return new Point(line, col);
+    }
 
 }
 
@@ -46,14 +62,16 @@ public enum Direction
     Right
 }
 
-public class CellPair
+public class MapUnitPair
 {
     public IMapUnit FirstCell { get; private set; }
     public IMapUnit SecondCell { get; private set; }
 
-    public CellPair(IMapUnit first, IMapUnit sec)
+    public MapUnitPair(IMapUnit first, IMapUnit sec)
     {
         FirstCell = first;
         SecondCell = sec;
     }
+
+    
 }

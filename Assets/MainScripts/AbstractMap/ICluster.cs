@@ -9,12 +9,13 @@ public interface ICluster:IMapUnit
     int Height { get; }
     int ChildrenWidth { get; }
     int ChildrenHeigth { get; }
+    IMapUnit[,] Children { get; }
 
 
-    List<IMapUnit> SelfLeftEntries { get; }
-    List<IMapUnit> SelfRightEntries { get; }
-    List<IMapUnit> SelfTopEntries { get; }
-    List<IMapUnit> SelfBottomEntries { get; }
+    List<MapUnitPair> SelfLeftEntries { get; }
+    List<MapUnitPair> SelfRightEntries { get; }
+    List<MapUnitPair> SelfTopEntries { get; }
+    List<MapUnitPair> SelfBottomEntries { get; }
 
    
     IMapUnit GetChildCluster(Point position);
@@ -24,6 +25,7 @@ public interface ICluster:IMapUnit
 
     void ComputePathTable();
     void LinkClustersByEntries();
+    List<MapUnitPair> GetSharedBorder(ICluster other);
     void Write(BinaryWriter bw);
     void Read(BinaryReader br);
    

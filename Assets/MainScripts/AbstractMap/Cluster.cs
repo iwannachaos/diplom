@@ -1,10 +1,17 @@
 ﻿using UnityEngine;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Cluster : BaseCluster
 {
     protected ICluster[,] children;
+
+    override
+    public IMapUnit[,] Children
+    {
+        get { return children; }
+    }
 
     public override int ChildrenWidth
     {
@@ -52,11 +59,11 @@ public class Cluster : BaseCluster
 
 
     override
-    public void Build(int clusterW, int clusterH, int cellW, int cellH)
+    public void Build(int clusterW, int clusterH, int cellW, int cellH, int deepLevel)
     {
         int width = cellW / clusterW;
         int height = cellH / clusterH;
-
+        ClusterDeepLevel = deepLevel;
        // SizeByChildClusters(wSeparate, hSeparate, out width, out  height);
         children = new ICluster[clusterH, clusterW];
 
@@ -69,7 +76,7 @@ public class Cluster : BaseCluster
                 {
                     var cluster = new Cluster(cellH / clusterH, cellW / clusterW, new Point(i, j), this);
                     children[i, j] = cluster;
-                    cluster.Build(clusterW, clusterH, width, height);
+                    cluster.Build(clusterW, clusterH, width, height, deepLevel+1);
                 }
             }
         }
@@ -81,7 +88,7 @@ public class Cluster : BaseCluster
                 {
                     var grid = new Grid(height, width, new Point(i, j), this);
                     children[i, j] = grid;
-                    grid.Build(clusterW, clusterH, width, height);
+                    grid.Build(clusterW, clusterH, width, height, deepLevel+1);
                 }
             }
         }
@@ -104,7 +111,7 @@ public class Cluster : BaseCluster
             if (c == null || c.SelfLeftEntries == null)
                 Debug.Log(c);
             if (c.SelfLeftEntries.Count > 0)
-                SelfLeftEntries.Add(c);
+                SelfLeftEntries.Add(new MapUnitPair(c,c.LeftNeighbor));
                 
         }
 
@@ -112,7 +119,7 @@ public class Cluster : BaseCluster
         {
             ICluster c = children[j, children.GetLength(0)-1];
             if (c.SelfRightEntries.Count > 0)
-                SelfRightEntries.Add(c);
+                SelfRightEntries.Add(new MapUnitPair(c, c.RightNeighbor));
               
         }
 
@@ -120,14 +127,14 @@ public class Cluster : BaseCluster
         {
             ICluster c = children[0, j];
             if (c.SelfBottomEntries.Count > 0)
-                SelfBottomEntries.Add(c);
+                SelfBottomEntries.Add(new MapUnitPair(c, c.BottomNeighbor));
         }
 
         for (int j = 0; j < children.GetLength(1); j++)
         {
             ICluster c = children[children.GetLength(1)-1, j];
             if (c.SelfTopEntries.Count > 0)
-                SelfTopEntries.Add(c);
+                SelfTopEntries.Add(new MapUnitPair(c, c.TopNeighbor));
         }
 
         #region logging
@@ -164,6 +171,7 @@ public class Cluster : BaseCluster
 
     }
 
+
     override
     public void ComputePathTable()
     {
@@ -183,7 +191,7 @@ public class Cluster : BaseCluster
         bw.Write(width);
         for (int i = 0; i < height; i++)
         {
-            for (int j = 0; j < width; j++)
+            for (int j = 0; j < width; j++) 
             {
                 var cpt = pathTables[i, j];
                 cpt.Write(bw);

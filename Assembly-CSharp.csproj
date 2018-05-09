@@ -76,6 +76,7 @@
     <Compile Include="Assets\MainScripts\Barriers\Portal.cs" />
     <Compile Include="Assets\MainScripts\Barriers\UnpassibleBarrier.cs" />
     <Compile Include="Assets\MainScripts\GameLogic\AStar.cs" />
+    <Compile Include="Assets\MainScripts\GameLogic\HPAstar.cs" />
     <Compile Include="Assets\MainScripts\GameLogic\Path.cs" />
     <Compile Include="Assets\MainScripts\GameLogic\PathTable.cs" />
     <Compile Include="Assets\MainScripts\GameMap\MapBuilder.cs" />
@@ -85,11 +86,12 @@
     <Compile Include="Assets\MainScripts\Units\Magician.cs" />
     <Compile Include="Assets\MainScripts\Units\Pitter.cs" />
     <Compile Include="Assets\MainScripts\Units\Unit.cs" />
-    <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>E:/Unity/Diplom/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
-    </Reference>
+    <Compile Include="Assets\MainScripts\Units\UnitProcessor.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>E:/Unity/Diplom/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.PackageManagerUI.Editor">
+      <HintPath>E:/Unity/Diplom/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity 2018.1.0b12/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

@@ -7,16 +7,16 @@ public class Grid : BaseCluster
     public Grid(Cell[,] Cells, Point pos, BaseCluster parent)
          : base(Cells.GetLength(0), Cells.GetLength(1), pos, parent)
     {
-        this.Cells = Cells;
+        this.cells = Cells;
     }
 
-    public Cell[,] Cells { get; private set; }
+    private Cell[,] cells;
 
     public override int ChildrenWidth
     {
         get
         {
-            return Cells.GetLength(1);
+            return cells.GetLength(1);
         }
     }
 
@@ -24,26 +24,31 @@ public class Grid : BaseCluster
     {
         get
         {
-            return Cells.GetLength(0);
+            return cells.GetLength(0);
         }
     }
 
     public Grid(int width, int height, Point pos, BaseCluster parent)
     : base(width, height, pos, parent)
     {
-        Cells = new Cell[height, width];  
+        cells = new Cell[height, width];  
     }
 
+    override
+    public IMapUnit[,] Children
+    {
+        get { return cells; }
+    }
 
     public Cell GetCellByLocalPosition(Point position)
     {
-        return Cells[position.Line, position.Column];
+        return cells[position.Line, position.Column];
     }
 
     public Cell GetCellByLocalPosition(int line, int col)
     {
         //Debug.Log(line + ", " + col);
-        return Cells[line, col];
+        return cells[line, col];
     }
 
 
@@ -51,30 +56,30 @@ public class Grid : BaseCluster
     {
         for (int j = 0; j < Height; j++)
         {
-            Cell c = Cells[j, 0];
+            Cell c = cells[j, 0];
             if (c.LeftNeighbor!= null && c.Passible && ((Cell)c.LeftNeighbor).Passible)
-                SelfLeftEntries.Add(c);
+                SelfLeftEntries.Add(new MapUnitPair(c,c.LeftNeighbor));
         }
 
         for (int j = 0; j < Height; j++)
         {
-            Cell c = Cells[j, Cells.GetLength(0) - 1];
+            Cell c = cells[j, cells.GetLength(0) - 1];
             if (c.RightNeighbor != null && c.Passible && ((Cell)c.RightNeighbor).Passible)
-                SelfRightEntries.Add(c);
+                SelfRightEntries.Add(new MapUnitPair(c, c.RightNeighbor));
         }
 
         for (int j = 0; j < Width; j++)
         {
-            Cell c = Cells[0, j];
+            Cell c = cells[0, j];
             if (c.BottomNeighbor != null && c.Passible &&  ((Cell)c.BottomNeighbor).Passible)
-                SelfBottomEntries.Add(c);
+                SelfBottomEntries.Add(new MapUnitPair(c, c.BottomNeighbor));
         }
 
         for (int j = 0; j < Width; j++)
         {
-            Cell c = Cells[Cells.GetLength(1) - 1, j];
+            Cell c = cells[cells.GetLength(1) - 1, j];
             if (c.TopNeighbor != null && c.Passible && ((Cell)c.TopNeighbor).Passible)
-                SelfTopEntries.Add(c);
+                SelfTopEntries.Add(new MapUnitPair(c, c.TopNeighbor));
         }
 
         //FileStream fs = new FileStream("Links.txt", FileMode.Append);
@@ -113,8 +118,10 @@ public class Grid : BaseCluster
 
 
     override
-    public void Build(int clusterW, int clusterH,  int cellW, int cellH) 
+    public void Build(int clusterW, int clusterH,  int cellW, int cellH, int deepLevel) 
     {
+        ClusterDeepLevel = deepLevel;
+        GeneralGrid.Instance.DeepLevel = deepLevel;
         for (int i = 0; i < Height; i++)
         {
             for (int j = 0; j < Width; j++)
@@ -122,9 +129,9 @@ public class Grid : BaseCluster
                 var gp = GlobalClusterPosition;
                 //if (gp.Column * Width + j >= GeneralGrid.Instance.Cells.GetLength(1))
                 //    Debug.Log(gp.Column + "," + j);
-                Cells[i, j] = GeneralGrid.Instance.Cells[gp.Line + i, gp.Column + j];
-                Cells[i, j].LocalClusterPosition = new Point(i, j);
-                Cells[i, j].Parent = this;
+                cells[i, j] = GeneralGrid.Instance.Cells[gp.Line + i, gp.Column + j];
+                cells[i, j].LocalClusterPosition = new Point(i, j);
+                cells[i, j].Parent = this;
             }
         }
 
@@ -135,7 +142,7 @@ public class Grid : BaseCluster
     override
     public  IMapUnit GetChildCluster(Point position)
     {
-        return Cells[position.Line, position.Column];
+        return cells[position.Line, position.Column];
     }
 
     override
@@ -143,6 +150,6 @@ public class Grid : BaseCluster
     {
         if (line < 0 || line >= Height || col < 0 || col >= Width)
             Debug.Log(line + "," + col);
-        return Cells[line, col];
+        return cells[line, col];
     }
 }

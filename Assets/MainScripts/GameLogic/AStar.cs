@@ -11,7 +11,7 @@ public class AStar
     private List<IMapUnit> WaitingCells { get; set; }
     private List<IMapUnit> CheckingCells { get; set; }
     private float[,] pathLenthToHereVar { get; set; }
-    private List<IMapUnit> path;
+    private Path path;
     private bool finished;
     private IMapUnit finish;
 
@@ -29,14 +29,30 @@ public class AStar
                 //Cells[i, j] = new BaseCluster(i, j);
                 setPathLengthToHere(Cells[i, j], -1);
             }
-        path = new List<IMapUnit>();
+        path = new Path();
+        pathPoints = new Point[Cells.GetLength(0), Cells.GetLength(1)];
+    }
+
+    public AStar()
+    {
+        finished = false;
+        Cells = GeneralGrid.Instance.Cells;
+        WaitingCells = new List<IMapUnit>();
+        CheckingCells = new List<IMapUnit>();
+        pathLenthToHereVar = new float[Cells.GetLength(0), Cells.GetLength(1)];
+        for (int i = 0; i < Cells.GetLength(0); i++)
+            for (int j = 0; j < Cells.GetLength(1); j++)
+            {
+                setPathLengthToHere(Cells[i, j], -1);
+            }
+        path = new Path();
         pathPoints = new Point[Cells.GetLength(0), Cells.GetLength(1)];
     }
 
     public void GetPathMask(object startFinish)
     {
-        IMapUnit start = ((CellPair)startFinish).FirstCell;
-        finish = ((CellPair)startFinish).SecondCell;
+        IMapUnit start = ((MapUnitPair)startFinish).FirstCell;
+        finish = ((MapUnitPair)startFinish).SecondCell;
         pathLenthToHereVar[start.LocalClusterPosition.Line, start.LocalClusterPosition.Column] = 0;
         CheckingCells.Add(start);
         while (!finished)
@@ -57,7 +73,7 @@ public class AStar
         path.Reverse();
     }
 
-     public List<IMapUnit> GetPath(CellPair startFinish)
+     public Path GetPath(MapUnitPair startFinish)
     {
         Thread thr = new Thread(GetPathMask);
         thr.Start(startFinish);

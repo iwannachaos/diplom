@@ -47,11 +47,11 @@ public class Path
     public void Read(BinaryReader br)
     {
         int length = br.ReadInt32();
-        for (int c = 0; c < length;  c++)
+            for (int c = 0; c < length;  c++)
         {
            int line = br.ReadInt32();
            int col = br.ReadInt32();
-           Points[c] = new Point(line, col);
+           Points.Add(new Point(line, col));
         }
     }
 

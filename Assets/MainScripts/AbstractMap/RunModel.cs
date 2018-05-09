@@ -6,12 +6,21 @@ using System.IO;
 
 public class RunModel : MonoBehaviour
 {
+    public static RunModel Instance { get; private set; }
+
     public Cluster CentralCluster { get; private set; }
+
+    public void Start()
+    {
+        Instance = this;
+    }
 
     void BuildGrid(object cells)
     {
         GeneralGrid.Instance.ToGrid((CellType[,])cells);
     }
+
+
 
 
     public void Run()
@@ -42,7 +51,7 @@ public class RunModel : MonoBehaviour
 
         //GeneralGrid.Instance.ToGrid(cells);
         CentralCluster = new Cluster(width, height, new Point(0,0), null);
-        CentralCluster.Build(10, 10, 1000, 1000);
+        CentralCluster.Build(10, 10, 1000, 1000, GeneralGrid.Instance.DeepLevel);
         CentralCluster.LinkClustersByEntries();       
     }
 

@@ -8,11 +8,12 @@ public abstract class BaseCluster : ICluster
     public int Width { get; private set; }
     public int Height { get; private set; }
     public Point LocalClusterPosition { get; private set; }
+    public int ClusterDeepLevel { get; protected set; }
 
-    public List<IMapUnit> SelfLeftEntries { get; private set; }
-    public List<IMapUnit> SelfRightEntries { get; private set; }
-    public List<IMapUnit> SelfTopEntries { get; private set; }
-    public List<IMapUnit> SelfBottomEntries { get; private set; }
+    public List<MapUnitPair> SelfLeftEntries { get; private set; }
+    public List<MapUnitPair> SelfRightEntries { get; private set; }
+    public List<MapUnitPair> SelfTopEntries { get; private set; }
+    public List<MapUnitPair> SelfBottomEntries { get; private set; }
     public ICluster Parent { get; private set; }
 
 
@@ -23,10 +24,10 @@ public abstract class BaseCluster : ICluster
         LocalClusterPosition = position;
         Parent = parent;
 
-        SelfLeftEntries = new List<IMapUnit>();
-        SelfRightEntries = new List<IMapUnit>();
-        SelfTopEntries = new List<IMapUnit>();
-        SelfBottomEntries = new List<IMapUnit>();
+        SelfLeftEntries = new List<MapUnitPair>();
+        SelfRightEntries = new List<MapUnitPair>();
+        SelfTopEntries = new List<MapUnitPair>();
+        SelfBottomEntries = new List<MapUnitPair>();
     }
 
 
@@ -90,6 +91,8 @@ public abstract class BaseCluster : ICluster
     
     public abstract int ChildrenHeigth { get; }
 
+    abstract public IMapUnit[,] Children { get; }
+
     protected void SizeByChildClusters(int widthSeparationPartsCount, int heightSeparationPartsCount, out int width, out int height)
     {
         var ChildClusterWidth = Width / widthSeparationPartsCount;
@@ -108,7 +111,7 @@ public abstract class BaseCluster : ICluster
 
     abstract public IMapUnit GetChildCluster(int line, int col);
 
-    public abstract void Build(int clusterW, int clusterH, int cellW, int cellH);
+    public abstract void Build(int clusterW, int clusterH, int cellW, int cellH, int deepLevel);
 
     public abstract void LinkClustersByEntries();
 
@@ -128,6 +131,19 @@ public abstract class BaseCluster : ICluster
         return float.PositiveInfinity;
     }
 
+    public List<MapUnitPair> GetSharedBorder(ICluster other)
+    {
+        if (other == LeftNeighbor)
+            return SelfLeftEntries;
+        else if (other == RightNeighbor)
+            return SelfRightEntries;
+        else if (other == BottomNeighbor)
+            return SelfBottomEntries;
+        else if (other == TopNeighbor)
+            return SelfTopEntries;
+        return new List<MapUnitPair>();
+    }
+
     virtual public void ComputePathTable()
     {
     }
@@ -139,4 +155,6 @@ public abstract class BaseCluster : ICluster
     virtual public void Read(BinaryReader br)
     {
     }
+
+ 
 }

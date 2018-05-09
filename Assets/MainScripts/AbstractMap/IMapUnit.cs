@@ -15,6 +15,7 @@ public interface IMapUnit
     Point GlobalClusterPosition { get; }
 
     float ClusterPassibilityFromCoef(Direction dir);
+
    // float ClusterPassabilityFromCoef(Dire)
 
 }
